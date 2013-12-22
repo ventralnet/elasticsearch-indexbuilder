@@ -14,7 +14,7 @@ public class IndexSettingsBuilderUnitTests {
     @Before
     public void setup() {
         //TODO mock client
-        builder = new IndexSettingsBuilder(null,"");
+        builder = new IndexSettingsBuilder();
     }
     
     @Test

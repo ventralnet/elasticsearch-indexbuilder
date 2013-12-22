@@ -1,10 +1,11 @@
 package edu.kirkley.elasticsearch.indexbuilder;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 
 import org.elasticsearch.action.admin.cluster.state.ClusterStateRequest;
 import org.elasticsearch.action.admin.cluster.state.ClusterStateResponse;
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
@@ -15,15 +16,13 @@ import org.junit.Test;
 
 import edu.kirkley.elasticsearch.indexbuilder.util.MockElasticSearchServer;
 
-import static org.junit.Assert.assertEquals;
-
-public class IndexSettingsBuilderIT {
+public class IndexBuilderIT {
 
     private MockElasticSearchServer mockServer;
     
     private Client client;
     
-    private IndexSettingsBuilder builder;
+    private IndexBuilder builder;
     
     private String testIndexName = "testindex";
     
@@ -33,7 +32,7 @@ public class IndexSettingsBuilderIT {
         shutdown(); //cleanup stale data
         mockServer = new MockElasticSearchServer();
         client = mockServer.getClient();
-        builder = new IndexSettingsBuilder(client,testIndexName);
+        builder = new IndexBuilder(client).setIndexName(testIndexName);
     }
 
     @Test

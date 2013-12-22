@@ -1,11 +1,9 @@
 package edu.kirkley.elasticsearch.indexbuilder;
 
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
-import org.elasticsearch.client.Client;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.ImmutableSettings.Builder;
+import org.elasticsearch.common.settings.Settings;
 
 public class IndexSettingsBuilder {
 
@@ -13,24 +11,9 @@ public class IndexSettingsBuilder {
     
     private Integer numberOfReplicas;
 
-    private String indexName;
-    
-    private Client client;
-    
-    public IndexSettingsBuilder(Client client, String indexName) {
-        this.client = client;
-        this.indexName = indexName;
+    public IndexSettingsBuilder() {
     }
  
-    public IndexSettingsBuilder setName(final String indexName) {
-        this.indexName = indexName;
-        return this;
-    }
-    
-    public String getIndexName() {
-        return indexName;
-    }
-    
     public IndexSettingsBuilder setNumberOfShards(final int numberOfShards) {
         this.numberOfShards = numberOfShards;
         return this;
@@ -49,12 +32,8 @@ public class IndexSettingsBuilder {
         return numberOfShards;
     }
     
-    public CreateIndexRequest build() {
+    public Settings.Builder build() {
         Builder settingsBuilder = ImmutableSettings.builder();
-        
-        if (isNull(getIndexName())) {
-            throw new IllegalStateException("You must set the index name.");
-        }
         
         if (isNotNull(getNumberOfShards())) {
             settingsBuilder.put(IndexMetaData.SETTING_NUMBER_OF_SHARDS,getNumberOfShards());
@@ -63,12 +42,7 @@ public class IndexSettingsBuilder {
             settingsBuilder.put(IndexMetaData.SETTING_NUMBER_OF_REPLICAS,getNumberOfReplicas());
         }
         
-        CreateIndexRequestBuilder builder = client.admin().indices().prepareCreate(getIndexName());
-        builder.setSettings(settingsBuilder.build());
-       
-        builder.execute().actionGet();
-        
-        return builder.request();
+        return settingsBuilder;
     }
     
     private boolean isNull(Object o) {
