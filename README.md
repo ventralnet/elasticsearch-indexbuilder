@@ -16,5 +16,5 @@ IndexBuilder builder = new IndexBuilder(client).setIndexName("my_index")
                   .setNumberOfReplicas(5)
                   .addMapping(new LongIndexField("my_field",true,true));
 
-indexBuilder.build();
+indexBuilder.build(); //Will create the index in the cluster
 ```
