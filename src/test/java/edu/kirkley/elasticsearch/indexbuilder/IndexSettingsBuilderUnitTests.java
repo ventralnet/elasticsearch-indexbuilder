@@ -5,6 +5,7 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.kirkley.elasticsearch.indexbuilder.analysis.Analyzer;
 import static org.junit.Assert.assertEquals;
 
 public class IndexSettingsBuilderUnitTests {
@@ -29,6 +30,34 @@ public class IndexSettingsBuilderUnitTests {
         Integer expected = randomInteger();
         builder.setNumberOfReplicas(expected);
         assertEquals(expected,builder.getNumberOfReplicas());
+    }
+    
+    @Test
+    public void setsCorrectAnalyzer() {
+    	Analyzer analyzer = new Analyzer();
+    	builder.setAnalyzer(analyzer);
+    	assertEquals(analyzer, builder.getAnalyzer());
+    }
+    
+    @Test
+    public void setsAutoExpandReplicas() {
+    	String expected = "0-all";
+    	builder.setAutoExpandReplicas(expected);
+    	assertEquals(expected, builder.getAutoExpandReplicas());
+    }
+    
+    @Test
+    public void setsIndexReadOnly() {
+    	boolean expected = true;
+    	builder.setIndexReadOnly(expected);
+    	assertEquals(expected, builder.isIndexReadOnly());
+    }
+    
+    @Test
+    public void setWriteOperationsDisabled() {
+    	boolean expected = true;
+    	builder.setWriteOperationsDisabled(expected);
+    	assertEquals(expected,builder.isWriteOperationsDisabled());
     }
     
     private int randomInteger() {

@@ -1,13 +1,14 @@
 package edu.kirkley.elasticsearch.indexbuilder;
 
+import static org.mockito.Mockito.verify;
+
 import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import static org.mockito.Mockito.verify;
+import edu.kirkley.elasticsearch.indexbuilder.analysis.Analyzer;
 
 public class IndexBuilderUnitTests {
 
@@ -42,6 +43,19 @@ public class IndexBuilderUnitTests {
     public void getNumberOfShardsPassesThroughToIndexSettingsBuilder() {
         indexBuilder.getNumberOfShards();
         verify(mockSettingsBuilder).getNumberOfShards();
+    }
+    
+    @Test
+    public void setAnalyzerPassesThroughToIndexSettingsBuilder() {
+        Analyzer analyzer = new Analyzer();
+        indexBuilder.setAnalyzer(analyzer);
+        verify(mockSettingsBuilder).setAnalyzer(analyzer);
+    }
+    
+    @Test
+    public void getAnalyzerPassesThroughToIndexSettingsBuilder() {
+        indexBuilder.getAnalyzer();
+        verify(mockSettingsBuilder).getAnalyzer();
     }
     
     @Test
