@@ -14,7 +14,9 @@ api will look something like this
 IndexBuilder builder = new IndexBuilder(client).setIndexName("my_index")
                   .setNumberOfShards(30)
                   .setNumberOfReplicas(5)
-                  .addMapping(new LongIndexField("my_field",true,true));
+                  .addMapping(new IndexMappingBuilder("my_type")
+                              .addField(new LongIndexField("my_field",true,true)))
+                              .addField(new StringIndexField("my_string",true,false)));
 
 indexBuilder.build(); //Will create the index in the cluster
 ```
