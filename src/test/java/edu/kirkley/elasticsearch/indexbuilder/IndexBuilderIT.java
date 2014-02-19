@@ -23,11 +23,11 @@ public class IndexBuilderIT {
     private Client client;
 
     private IndexBuilder builder;
-    
+
     private IndexBuilder builder2;
 
     private String testIndexName = "testindex";
-    
+
     private String testIndexName2 = "testindex2";
 
     @Before
@@ -68,12 +68,12 @@ public class IndexBuilderIT {
         builder.build();
 
         assertMetaDataOptionsEnabled(expected, testIndexName);
-        
+
         expected = false;
 
         builder2.setMetaDataOperationsEnabled(expected);
         builder2.build();
-        
+
         assertMetaDataOptionsEnabled(expected, testIndexName2);
     }
 
@@ -85,15 +85,15 @@ public class IndexBuilderIT {
         builder.build();
 
         assertWriteOperationsDisabled(expected, testIndexName);
-        
+
         expected = false;
 
         builder2.setWriteOperationsDisabled(expected);
         builder2.build();
-        
+
         assertWriteOperationsDisabled(expected, testIndexName2);
     }
-    
+
     @Test
     public void IndexSettingsBuilderProperlySetsAutoExpandReplicas() {
         String expected = "0-all";
@@ -102,15 +102,15 @@ public class IndexBuilderIT {
         builder.build();
 
         assertSetAutoExpandReplicas(expected, testIndexName);
-        
+
         expected = "false";
 
         builder2.setAutoExpandReplicas(expected);
         builder2.build();
-        
+
         assertSetAutoExpandReplicas(expected, testIndexName2);
-    }    
-    
+    }
+
     private void assertSetAutoExpandReplicas(String expected, String indexName) {
         IndexMetaData indexMetaData = getIndexMetadata(indexName);
         assertEquals(expected, indexMetaData.getSettings().get(IndexMetaData.SETTING_AUTO_EXPAND_REPLICAS));

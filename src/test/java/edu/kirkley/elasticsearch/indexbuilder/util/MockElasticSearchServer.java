@@ -39,13 +39,13 @@ public class MockElasticSearchServer implements Closeable {
         deleteDataDirectory();
     }
 
-    private Map<String,String> standaloneServerSettings() {
-        Map<String,String> settings = new HashMap<String, String>();
+    private Map<String, String> standaloneServerSettings() {
+        Map<String, String> settings = new HashMap<String, String>();
         settings.put("http.enabled", "false");
         settings.put("path.data", dataDirectory.getAbsolutePath());
         return settings;
     }
-    
+
     private static String randomString() {
         return UUID.randomUUID().toString();
     }

@@ -1,6 +1,10 @@
 package edu.kirkley.elasticsearch.indexbuilder;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 
@@ -13,6 +17,8 @@ public class IndexBuilder {
     private Client client;
 
     private String indexName;
+
+    private Collection<IndexMappingBuilder> indexMappingBuilders = new ArrayList<IndexMappingBuilder>();
 
     public IndexBuilder(final Client client) {
         indexSettingsBuilder = new IndexSettingsBuilder();
@@ -64,6 +70,15 @@ public class IndexBuilder {
         return this;
     }
 
+    public IndexBuilder addMapping(IndexMappingBuilder builder) {
+        indexMappingBuilders.add(builder);
+        return this;
+    }
+
+    public Collection<IndexMappingBuilder> getIndexMappingBuilders() {
+        return indexMappingBuilders;
+    }
+
     public Analyzer getAnalyzer() {
         return indexSettingsBuilder.getAnalyzer();
     }
@@ -107,6 +122,13 @@ public class IndexBuilder {
         builder.setSettings(settingsBuilder.build());
 
         builder.execute().actionGet();
+
+        for (IndexMappingBuilder mappingBuilder : getIndexMappingBuilders()) {
+            PutMappingRequestBuilder putMappingRequest = client.admin().indices().preparePutMapping(getIndexName());
+            putMappingRequest.setType(mappingBuilder.getType());
+            putMappingRequest.setSource(mappingBuilder.build());
+            putMappingRequest.execute().actionGet();
+        }
     }
 
     private boolean isNull(Object o) {
