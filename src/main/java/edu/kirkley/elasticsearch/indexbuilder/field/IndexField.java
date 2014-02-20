@@ -13,7 +13,7 @@ public abstract class IndexField {
 
     private boolean analyzed;
 
-    private Map<String, String> additionalInformation = new HashMap<String, String>();
+    private Map<String, Object> additionalInformation = new HashMap<String, Object>();
 
     public IndexField(final String fieldName, final boolean store, final boolean analyzed) {
         this.store = store;
@@ -36,12 +36,16 @@ public abstract class IndexField {
     public void addAdditionalInformation(String key, String value) {
         additionalInformation.put(key, value);
     }
+    
+    public void addAdditionalInformation(String key, Map<String, Object> value) {
+        additionalInformation.put(key, value);
+    }
 
-    public String getAdditionalInformation(String key) {
+    public Object getAdditionalInformation(String key) {
         return additionalInformation.get(key);
     }
 
-    public Set<Entry<String, String>> getAdditionalInformation() {
+    public Set<Entry<String, Object>> getAdditionalInformation() {
         return additionalInformation.entrySet();
     }
 
